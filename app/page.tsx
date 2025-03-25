@@ -1,7 +1,8 @@
 import type React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, BarChart2, Calendar, CheckCircle, Clock, Users } from "lucide-react"
+import { ArrowRight, BarChart2, Calendar, CheckCircle, Clock, Users, X } from "lucide-react"
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -9,10 +10,13 @@ import { Footerdemo } from "@/components/ui/footer-section"
 import { Squares } from "@/components/ui/squares-background"
 import { GlowingEffect } from "@/components/ui/glowing-effect"
 import { Input } from "@/components/ui/input"
+import HeaderThemeHandler from "@/components/header-theme-handler"
 
 export default function LandingPage() {
+
   return (
     <div className="flex min-h-screen flex-col">
+      <HeaderThemeHandler />
       <Squares
         className="fixed inset-0 z-[-1]"
         direction="diagonal"
@@ -21,15 +25,21 @@ export default function LandingPage() {
         borderColor="#333"
         hoverFillColor="#222"
       />
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header 
+        className="sticky top-0 z-50 w-full border-b backdrop-blur supports-[backdrop-filter]:backdrop-blur-sm"
+        style={{ 
+          background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.9))" 
+        }}
+        data-dark-style="background: linear-gradient(to bottom, rgba(50, 50, 50, 0.95), rgba(30, 30, 30, 0.9))"
+      >
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
           <Link href="/">
             <Image
               src="/harmonicslogo.png"
-              alt="Harmonics.live Logo"
-              width={130}
-              height={50}
+              alt="Harmonics Logo"
+              width={190}
+              height={110}
               className="full"
             />
           </Link>
@@ -222,31 +232,63 @@ export default function LandingPage() {
                 <tbody>
                   <tr className="border-b">
                     <td className="p-4">Unified Analytics</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">❌</td>
-                    <td className="p-4 text-center">✅</td>
+                    <td className="p-4 text-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <X className="h-5 w-5 text-red-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 inline" />
+                    </td>
                   </tr>
                   <tr className="border-b">
                     <td className="p-4">AI Matchmaking</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">❌</td>
-                    <td className="p-4 text-center">❌</td>
-                    <td className="p-4 text-center">❌</td>
+                    <td className="p-4 text-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <X className="h-5 w-5 text-red-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <X className="h-5 w-5 text-red-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <X className="h-5 w-5 text-red-500 inline" />
+                    </td>
                   </tr>
                   <tr className="border-b">
                     <td className="p-4">Collaboration Tools</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">❌</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">❌</td>
+                    <td className="p-4 text-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <X className="h-5 w-5 text-red-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <X className="h-5 w-5 text-red-500 inline" />
+                    </td>
                   </tr>
                   <tr className="border-b">
                     <td className="p-4">Pitching Opportunities</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">❌</td>
-                    <td className="p-4 text-center">✅</td>
-                    <td className="p-4 text-center">❌</td>
+                    <td className="p-4 text-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <X className="h-5 w-5 text-red-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <CheckCircle className="h-5 w-5 text-green-500 inline" />
+                    </td>
+                    <td className="p-4 text-center">
+                      <X className="h-5 w-5 text-red-500 inline" />
+                    </td>
                   </tr>
                   <tr className="border-b">
                     <td className="p-4">Starting Price</td>
@@ -420,42 +462,64 @@ export default function LandingPage() {
 
         <section id="faq" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl text-white">Frequently Asked Questions</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Everything you need to know about Harmonics
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto max-w-3xl py-12 space-y-8">
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white">How do I get started?</h3>
-                <p className="text-muted-foreground">
-                  Simply sign up for our waitlist, and we'll notify you as soon as you're granted access. Once in, you
-                  can connect your music platforms, set up your profile, and start exploring the features.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white">Which platforms can I connect?</h3>
-                <p className="text-muted-foreground">
-                  Harmonics integrates with Spotify, Apple Music, SoundCloud, YouTube, Instagram, TikTok, and more.
-                  We're constantly adding new integrations.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white">How does the AI matchmaking work?</h3>
-                <p className="text-muted-foreground">
-                  Our AI analyzes your music style, audience demographics, and career goals to suggest potential
-                  collaborators, labels, and opportunities that align with your artistic vision.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-bold text-white">Can labels use Harmonics too?</h3>
-                <p className="text-muted-foreground">
-                  Absolutely! Labels can create profiles to discover new talent, track artist performance, and connect
-                  directly with artists for potential signings.
-                </p>
+            <div className="mx-auto max-w-3xl py-12">
+              <div className="relative rounded-[1.25rem] border-[0.75px] border-border p-2 md:rounded-[1.5rem] md:p-3 bg-background/80 backdrop-blur-sm shadow-xl">
+                <GlowingEffect
+                  spread={40}
+                  glow={true}
+                  disabled={false}
+                  proximity={64}
+                  inactiveZone={0.01}
+                  borderWidth={3}
+                />
+                <div className="relative rounded-xl border-[0.75px] bg-background p-8 space-y-8">
+                  <div className="text-center space-y-2 mb-6">
+                    <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl text-primary">Frequently Asked Questions</h2>
+                    <p className="text-muted-foreground md:text-lg">
+                      Everything you need to know about Harmonics
+                    </p>
+                  </div>
+                  
+                  <div className="border-t border-border pt-6"></div>
+                  
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-primary">How do I get started?</h3>
+                    <p className="text-muted-foreground">
+                      Simply sign up for our waitlist, and we'll notify you as soon as you're granted access. Once in, you
+                      can connect your music platforms, set up your profile, and start exploring the features.
+                    </p>
+                  </div>
+                  
+                  <div className="border-t border-border pt-6"></div>
+                  
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-primary">Which platforms can I connect?</h3>
+                    <p className="text-muted-foreground">
+                      Harmonics integrates with Spotify, Apple Music, SoundCloud, YouTube, Instagram, TikTok, and more.
+                      We're constantly adding new integrations.
+                    </p>
+                  </div>
+                  
+                  <div className="border-t border-border pt-6"></div>
+                  
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-primary">How does the AI matchmaking work?</h3>
+                    <p className="text-muted-foreground">
+                      Our AI analyzes your music style, audience demographics, and career goals to suggest potential
+                      collaborators, labels, and opportunities that align with your artistic vision.
+                    </p>
+                  </div>
+                  
+                  <div className="border-t border-border pt-6"></div>
+                  
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-primary">Can labels use Harmonics too?</h3>
+                    <p className="text-muted-foreground">
+                      Absolutely! Labels can create profiles to discover new talent, track artist performance, and connect
+                      directly with artists for potential signings.
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
