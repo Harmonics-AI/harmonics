@@ -1,7 +1,7 @@
 import type React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { ArrowRight, BarChart2, Calendar, CheckCircle, Clock, Users, X } from "lucide-react"
+import { ArrowRight, BarChart, BarChart2, Calendar, CheckCircle, Clock, Headphones, Piano, Search, Users, X } from "lucide-react"
 import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button"
@@ -63,9 +63,11 @@ export default function LandingPage() {
           </nav>
           <div className="flex items-center gap-4">
             <ThemeToggle />
+            {/*
             <Button asChild>
               <Link href="/signup">Sign up</Link>
             </Button>
+            */}
           </div>
         </div>
       </header>
@@ -109,14 +111,14 @@ export default function LandingPage() {
                     </Link>
                   </Button>
                 </div>
-                <div
+                {/* <div
                   className="mt-4 text-sm text-muted-foreground animate-in"
                   style={{ "--index": 3 } as React.CSSProperties}
                 >
                   <span className="font-semibold text-primary">3,742</span> artists and labels already on the waitlist
-                </div>
+                </div> */}
               </div>
-              <div
+              {/* <div
                 className="relative w-full max-w-4xl overflow-hidden rounded-xl border bg-background p-2 shadow-2xl animate-in"
                 style={{ "--index": 3 } as React.CSSProperties}
               >
@@ -127,7 +129,7 @@ export default function LandingPage() {
                   height={800}
                   className="w-full object-cover"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
@@ -145,35 +147,35 @@ export default function LandingPage() {
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
               {[
                 {
-                  icon: BarChart2,
-                  title: "Unified Analytics",
+                  icon: Users,
+                  title: "Artist Profiles",
                   description:
-                    "Track your performance across all platforms in one place with real-time data and insights",
+                    "Create detailed profiles with bio, music links, and experience",
                 },
                 {
-                  icon: Users,
+                  icon: Search,
                   title: "Search & Discovery",
                   description: "Get discovered based on your genre, location, engagement metrics, and more",
                 },
                 {
-                  icon: Calendar,
+                  icon: Headphones,
                   title: "Collaboration Tools",
                   description: "Connect and share files with other artists and producers seamlessly",
                 },
                 {
                   icon: CheckCircle,
                   title: "AI Matchmaking",
-                  description: "Get matched with the perfect collaborators based on your style and goals",
+                  description: "Get matched with the perfect collaborators based on data-driven insights",
                 },
                 {
-                  icon: Clock,
-                  title: "Pitching Opportunities",
-                  description: "Access sync opportunities and pitch directly to labels and curators",
+                  icon: Piano,
+                  title: "Virtual Studio Integration",
+                  description: "Collaborate remotely on music projects",
                 },
                 {
-                  icon: ArrowRight,
-                  title: "Growth Tracking",
-                  description: "Monitor your audience growth and engagement across all platforms",
+                  icon: BarChart,
+                  title: "Analytics",
+                  description: "Data provided from Spotify, Apple Music, YouTube, Instagram, TikTok, and SoundCloud for real-time insights",
                 },
               ].map((feature, index) => (
                 <div key={index} className="relative min-h-[14rem]">
@@ -276,7 +278,7 @@ export default function LandingPage() {
                     </td>
                   </tr>
                   <tr className="border-b">
-                    <td className="p-4">Pitching Opportunities</td>
+                    <td className="p-4">Virtual Studio</td>
                     <td className="p-4 text-center">
                       <CheckCircle className="h-5 w-5 text-green-500 inline" />
                     </td>
