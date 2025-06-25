@@ -106,9 +106,6 @@ export default function Sidebar() {
                   <NavItem href="/workspaces" icon={Briefcase}>
                     Workspaces
                   </NavItem>
-                  <NavItem href="/opportunities" icon={Headphones}>
-                    Opportunities
-                  </NavItem>
                   <NavItem href="/agreements" icon={FileContract}>
                     Agreements
                   </NavItem>

@@ -25,6 +25,7 @@ import {
   Folder,
   Volume2,
   MoreHorizontal,
+  ChevronDown,
 } from "lucide-react"
 import Image from "next/image"
 
@@ -63,10 +64,10 @@ export default function WorkspacePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const [activeTab, setActiveTab] = useState("overview")
-  const [progress, setProgress] = useState(65)
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState("1:23")
   const [totalTime] = useState("3:45")
+  const [isFilesDropdownOpen, setIsFilesDropdownOpen] = useState(false)
 
   const [audioVersions] = useState<AudioVersion[]>([
     {
@@ -174,6 +175,39 @@ export default function WorkspacePage() {
             </div>
           </div>
           <div className="flex items-center gap-2">
+            <div className="relative">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-white border-musicConnect-border hover:bg-[#2B2B30]"
+                onClick={() => setIsFilesDropdownOpen(!isFilesDropdownOpen)}
+              >
+                <Folder className="h-4 w-4 mr-2" />
+                Files
+                <ChevronDown className="h-4 w-4 ml-1" />
+              </Button>
+              {isFilesDropdownOpen && (
+                <div className="absolute top-full right-0 mt-1 w-64 bg-[#1F1F23] border border-musicConnect-border rounded-lg shadow-lg z-10">
+                  <div className="p-2 space-y-1">
+                    {[
+                      { name: "Summer_EP_Track1_v3.wav", type: "Audio" },
+                      { name: "Vocals_Raw.wav", type: "Audio" },
+                      { name: "Instrumental_v2.wav", type: "Audio" },
+                      { name: "Lyrics_Draft.txt", type: "Document" },
+                      { name: "Album_Artwork.psd", type: "Image" },
+                    ].map((file, index) => (
+                      <div key={index} className="flex items-center gap-2 p-2 hover:bg-[#2B2B30] rounded cursor-pointer">
+                        <FileAudio className="h-4 w-4 text-musicConnect-blue" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm text-white truncate">{file.name}</p>
+                          <p className="text-xs text-gray-400">{file.type}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
             <Button variant="outline" size="sm" className="text-white border-musicConnect-border hover:bg-[#2B2B30]">
               <Settings className="h-4 w-4 mr-2" />
               Settings
@@ -185,24 +219,29 @@ export default function WorkspacePage() {
           </div>
         </div>
 
-        {/* Progress Bar */}
+        {/* Task Board Preview */}
         <Card className="bg-[#1F1F23] border-musicConnect-border">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-gray-400">Project Progress</span>
-              <div className="flex items-center gap-2">
-                <Input
-                  type="number"
-                  value={progress}
-                  onChange={(e) => setProgress(Number(e.target.value))}
-                  className="w-16 h-8 bg-[#2B2B30] border-musicConnect-border text-white text-xs"
-                  min="0"
-                  max="100"
-                />
-                <span className="text-xs text-white">%</span>
-              </div>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-white">Task Board</CardTitle>
+              <Button size="sm" className="bg-musicConnect-blue hover:bg-musicConnect-blue/80">
+                <Plus className="h-4 w-4 mr-2" />
+                Add Task
+              </Button>
             </div>
-            <Progress value={progress} className="h-2 bg-[#2B2B30]" />
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {["todo", "in-progress", "review", "done"].map((status) => (
+                <div key={status} className="text-center">
+                  <div className={`w-3 h-3 rounded-full ${getStatusColor(status)} mx-auto mb-1`} />
+                  <p className="text-xs text-gray-400 capitalize">{status.replace("-", " ")}</p>
+                  <p className="text-lg font-bold text-white">
+                    {tasks.filter((task) => task.status === status).length}
+                  </p>
+                </div>
+              ))}
+            </div>
           </CardContent>
         </Card>
 
@@ -210,11 +249,9 @@ export default function WorkspacePage() {
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="bg-[#1F1F23] border border-musicConnect-border">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="audio">Audio Versions</TabsTrigger>
+            <TabsTrigger value="files">Files</TabsTrigger>
             <TabsTrigger value="tasks">Task Board</TabsTrigger>
             <TabsTrigger value="notes">Notes</TabsTrigger>
-            <TabsTrigger value="files">Files</TabsTrigger>
-            <TabsTrigger value="integrations">Integrations</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -290,23 +327,25 @@ export default function WorkspacePage() {
               </Card>
             </div>
 
-            {/* Recent Activity */}
+            {/* Collaboration Timeline */}
             <Card className="bg-[#1F1F23] border-musicConnect-border">
               <CardHeader>
-                <CardTitle className="text-white">Recent Activity</CardTitle>
+                <CardTitle className="text-white">Collaboration Timeline</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   {[
-                    { user: "You", action: "uploaded Summer_EP_Track1_v3.wav", time: "2 hours ago" },
-                    { user: "Sophia Martinez", action: "added a comment at 1:23", time: "1 hour ago" },
-                    { user: "Marcus Johnson", action: "marked 'Mix vocals' as in progress", time: "3 hours ago" },
+                    { user: "You", action: "created the workspace", time: "1 week ago", type: "create" },
+                    { user: "Sophia Martinez", action: "joined the collaboration", time: "6 days ago", type: "join" },
+                    { user: "Marcus Johnson", action: "started mixing process", time: "5 days ago", type: "audio" },
+                    { user: "You", action: "uploaded latest version", time: "2 hours ago", type: "upload" },
+                    { user: "Sophia Martinez", action: "added vocal feedback", time: "1 hour ago", type: "comment" },
                   ].map((activity, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-[#2B2B30] rounded-lg">
-                      <div className="w-8 h-8 bg-musicConnect-blue rounded-full flex items-center justify-center">
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="w-8 h-8 bg-musicConnect-blue rounded-full flex items-center justify-center flex-shrink-0">
                         <span className="text-xs font-medium text-white">{activity.user.charAt(0)}</span>
                       </div>
-                      <div className="flex-1">
+                      <div className="flex-1 pb-4 border-l border-gray-600 pl-4 -ml-4">
                         <p className="text-sm text-white">
                           <span className="font-medium">{activity.user}</span> {activity.action}
                         </p>
@@ -319,16 +358,19 @@ export default function WorkspacePage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="audio" className="space-y-6">
+          <TabsContent value="files" className="space-y-6">
             <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-white">Audio Versions</h2>
+              <h2 className="text-xl font-semibold text-white">Project Files & Audio Versions</h2>
               <Button onClick={handleFileUpload} className="bg-musicConnect-blue hover:bg-musicConnect-blue/80">
                 <Upload className="h-4 w-4 mr-2" />
-                Upload New Version
+                Upload Files
               </Button>
             </div>
-
-            <div className="space-y-4">
+            
+            {/* Audio Versions Section */}
+            <div>
+              <h3 className="text-lg font-medium text-white mb-4">Audio Versions</h3>
+              <div className="space-y-4">
               {audioVersions.map((version) => (
                 <Card key={version.id} className="bg-[#1F1F23] border-musicConnect-border">
                   <CardContent className="p-4">
@@ -396,7 +438,37 @@ export default function WorkspacePage() {
                     )}
                   </CardContent>
                 </Card>
-              ))}
+                              ))}
+              </div>
+            </div>
+            
+            {/* Other Files Section */}
+            <div>
+              <h3 className="text-lg font-medium text-white mb-4">Other Files</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {[
+                  { name: "Lyrics_Draft.txt", size: "2.1 KB", type: "text", date: "3 days ago" },
+                  { name: "Album_Artwork.psd", size: "12.4 MB", type: "image", date: "1 week ago" },
+                  { name: "Project_Notes.pdf", size: "156 KB", type: "document", date: "1 week ago" },
+                  { name: "Reference_Track.mp3", size: "8.2 MB", type: "audio", date: "2 weeks ago" },
+                ].map((file, index) => (
+                  <Card key={index} className="bg-[#1F1F23] border-musicConnect-border">
+                    <CardContent className="p-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 bg-musicConnect-blue rounded-lg flex items-center justify-center">
+                          <Folder className="h-5 w-5 text-white" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className="text-sm font-medium text-white truncate">{file.name}</h4>
+                          <p className="text-xs text-gray-400">
+                            {file.size} • {file.date}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </TabsContent>
 
@@ -471,103 +543,7 @@ Collaboration Notes:
             </Card>
           </TabsContent>
 
-          <TabsContent value="files" className="space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-white">Project Files</h2>
-              <Button onClick={handleFileUpload} className="bg-musicConnect-blue hover:bg-musicConnect-blue/80">
-                <Upload className="h-4 w-4 mr-2" />
-                Upload Files
-              </Button>
-            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                { name: "Vocals_Raw.wav", size: "45.2 MB", type: "audio", date: "2 hours ago" },
-                { name: "Instrumental_v2.wav", size: "38.7 MB", type: "audio", date: "1 day ago" },
-                { name: "Lyrics_Draft.txt", size: "2.1 KB", type: "text", date: "3 days ago" },
-                { name: "Album_Artwork.psd", size: "12.4 MB", type: "image", date: "1 week ago" },
-                { name: "Project_Notes.pdf", size: "156 KB", type: "document", date: "1 week ago" },
-                { name: "Reference_Track.mp3", size: "8.2 MB", type: "audio", date: "2 weeks ago" },
-              ].map((file, index) => (
-                <Card key={index} className="bg-[#1F1F23] border-musicConnect-border">
-                  <CardContent className="p-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-musicConnect-blue rounded-lg flex items-center justify-center">
-                        <Folder className="h-5 w-5 text-white" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-sm font-medium text-white truncate">{file.name}</h4>
-                        <p className="text-xs text-gray-400">
-                          {file.size} • {file.date}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-
-          <TabsContent value="integrations" className="space-y-6">
-            <Card className="bg-[#1F1F23] border-musicConnect-border">
-              <CardHeader>
-                <CardTitle className="text-white">Cloud Storage Integration</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {[
-                    { name: "Google Drive", connected: true, icon: "🔗" },
-                    { name: "Dropbox", connected: false, icon: "📦" },
-                    { name: "OneDrive", connected: false, icon: "☁️" },
-                  ].map((service, index) => (
-                    <Card key={index} className="bg-[#2B2B30] border-musicConnect-border">
-                      <CardContent className="p-4 text-center">
-                        <div className="text-2xl mb-2">{service.icon}</div>
-                        <h4 className="font-medium text-white mb-2">{service.name}</h4>
-                        <Button
-                          size="sm"
-                          variant={service.connected ? "outline" : "default"}
-                          className={
-                            service.connected
-                              ? "text-white border-musicConnect-border hover:bg-[#1F1F23]"
-                              : "bg-musicConnect-blue hover:bg-musicConnect-blue/80"
-                          }
-                        >
-                          {service.connected ? "Disconnect" : "Connect"}
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-[#1F1F23] border-musicConnect-border">
-              <CardHeader>
-                <CardTitle className="text-white">Auto-Sync Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-white">Auto-backup project files</h4>
-                    <p className="text-sm text-gray-400">Automatically backup files to connected cloud storage</p>
-                  </div>
-                  <Button variant="outline" size="sm" className="text-white border-musicConnect-border">
-                    Enable
-                  </Button>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-white">Sync on file changes</h4>
-                    <p className="text-sm text-gray-400">Sync files immediately when changes are detected</p>
-                  </div>
-                  <Button variant="outline" size="sm" className="text-white border-musicConnect-border">
-                    Enable
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
         </Tabs>
 
         <input
